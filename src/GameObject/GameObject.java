@@ -1,3 +1,4 @@
+package GameObject;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
@@ -36,7 +37,7 @@ public abstract class GameObject implements Serializable {
 	public abstract void tick();
 
 	public void render(Graphics g) {
-		g.drawImage(AbsolutionGame.sprPlayer[this.rotate], this.x, this.y, null);
+		g.drawImage(GameObjectHelper.sprPlayer[this.rotate], this.x, this.y, null);
 //		g.drawImage(this.sprite[this.rotate], this.x, this.y, null);
 	}
 
