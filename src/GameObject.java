@@ -1,19 +1,31 @@
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
-public abstract class GameObject {
+public abstract class GameObject implements Serializable {
 
-	private double x, y, velX, velY, rotate;
-	private double colLength, colWidth;
-	private boolean noCol;
-	private BufferedImage[] sprite; // Array of sprite Rotations per Degree
+	private static final long serialVersionUID = 5395933748344835733L;
 
-	public GameObject(BufferedImage[] sprite, double colLength, double colWidth) {
+	protected int x, y, velX, velY, rotate; // Rotate is Degrees CW from North
+											// (So 90Deg = 0 Deg)
+	protected int colLength, colWidth;
+	protected boolean noCol;
+	protected transient BufferedImage[] sprite; // Array of sprite Rotations per Degree
+
+	public GameObject(int x, int y, BufferedImage[] sprite, int rotate, int colLength, int colWidth) {
+		this(sprite, rotate, colLength, colWidth);
+		this.x = x;
+		this.y = y;
+	}
+
+	public GameObject(BufferedImage[] sprite, int rotate, int colLength, int colWidth) {
 		x = 0;
 		y = 0;
 		velX = 0;
 		velY = 0;
-		rotate = 90;
+		this.rotate = rotate;
+		this.colLength = colLength;
+		this.colWidth = colWidth;
 		if (colLength == 0 && colWidth == 0)
 			noCol = true;
 		else
@@ -23,7 +35,10 @@ public abstract class GameObject {
 
 	public abstract void tick();
 
-	public abstract void render(Graphics g);
+	public void render(Graphics g) {
+		g.drawImage(AbsolutionGame.sprPlayer[this.rotate], this.x, this.y, null);
+//		g.drawImage(this.sprite[this.rotate], this.x, this.y, null);
+	}
 
 	public abstract void onCollide();
 
