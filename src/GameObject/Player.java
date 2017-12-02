@@ -4,8 +4,8 @@ import java.awt.Graphics;
 
 public class Player extends GameObject {
 
-	public Player(int x, int y, int rotate, int colLength, int colWidth) {
-		super(x, y, GameObjectHelper.sprPlayer, rotate, colLength, colWidth);
+	public Player(int x, int y, int colLength, int colWidth) {
+		super(x, y, GameObjectAssets.sprPlayer,  colLength, colWidth);
 	}
 
 	@Override

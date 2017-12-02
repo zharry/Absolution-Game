@@ -31,6 +31,14 @@ public class GameHandler implements Serializable {
 				inCollision.add(go);
 		return inCollision;
 	}
+	
+	public ArrayList<GameObject> checkSprOverlap(GameObject obj) {
+		ArrayList<GameObject> inCollision = new ArrayList<GameObject>();
+		for (GameObject go : gameObjects)
+			if (obj.isSprCollide(go))
+				inCollision.add(go);
+		return inCollision;
+	}
 
 	public void addGameObject(GameObject obj) {
 		gameObjects.add(obj);

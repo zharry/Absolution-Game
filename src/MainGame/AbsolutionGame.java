@@ -15,7 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import GameObject.GameObjectHelper;
+import GameObject.GameObjectAssets;
 import Handler.BuilderHandler;
 import Handler.GameHandler;
 import Handler.GameInfo;
@@ -58,6 +58,10 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 		DEBUG = debug;
 		isBuilder = worldBuilder;
 
+		// Initialize Sprites
+		GameObjectAssets.initSprites();
+		
+		// Initialize Game Handlers
 		gameInfo = new GameInfo();
 		helper = new Helper(gameInfo);
 		handler = new GameHandler();
@@ -70,9 +74,6 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 			// Update Helper to include BuilderHandler
 			helper.setBuilderHandler(builderHandler);
 		}
-
-		// Initialize Sprites
-		GameObjectHelper.initSprites();
 
 		// Initialize JFrame
 		contentPane = this.getContentPane();
@@ -91,7 +92,7 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 			@Override
 			public void paint(Graphics g) {
 				// Reset Frame
-				g.setColor(new Color(0xC0C0C0));
+				g.setColor(new Color(0x211E27));
 				g.fillRect(0, 0, GameInfo.width, GameInfo.height);
 				// Render Game
 				handler.render(g);
@@ -221,10 +222,10 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 		if (isBuilder)
 			switch (k) {
 			case KeyEvent.VK_O:
-				builderHandler.incRotate();
+				builderHandler.incVar();
 				break;
 			case KeyEvent.VK_P:
-				builderHandler.decRotate();
+				builderHandler.decVar();
 				break;
 			}
 	}

@@ -4,12 +4,9 @@ import java.awt.event.MouseEvent;
 
 public class GameInfo {
 
-	// Changes only once upon Game Init when the user is choosing between
-	// Builder vs Game Mode.
 	public static int height = 640, width = 1040, gameWidth = 1040, builderWidth = 214;
 
 	private final int targetTPS = 60;
-
 	private boolean running, mouseDragging = false;
 	private int fps, fpsProc = 0, curTps, mouseX = 0, mouseY = 0, mouseButton = MouseEvent.NOBUTTON;
 
@@ -25,7 +22,7 @@ public class GameInfo {
 	}
 
 	public void setFPSProc(int fpsProc) {
-		this.fpsProc = fps;
+		this.fpsProc = fpsProc;
 	}
 
 	public int getFPSProc() {
