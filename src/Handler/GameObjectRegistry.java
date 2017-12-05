@@ -1,4 +1,4 @@
-package GameObject;
+package Handler;
 
 public class GameObjectRegistry {
 
@@ -14,5 +14,8 @@ public class GameObjectRegistry {
 	public static final int TILE_STAIRS = 9;
 	public static final int TILE_WALL = 10;
 	public static final int TILE_WATER = 11;
+
+	public static final int POINT_START = 12;
+	public static final int POINT_END = 13;
 
 }

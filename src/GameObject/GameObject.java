@@ -1,7 +1,6 @@
 package GameObject;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 public abstract class GameObject implements Serializable {
@@ -10,17 +9,16 @@ public abstract class GameObject implements Serializable {
 
 	protected int x, y, velX, velY;
 
-	protected int colLength, colWidth;
+	protected int colLength, colWidth, colXOffset, colYOffset;
 	protected boolean noCol;
-	protected transient BufferedImage sprite;
 
-	public GameObject(int x, int y, BufferedImage sprite, int colLength, int colWidth) {
-		this(sprite, colLength, colWidth);
+	public GameObject(int x, int y, int colWidth, int colLength, int colXOffset, int colYOffset) {
+		this(colWidth, colLength, colXOffset, colYOffset);
 		this.x = x;
 		this.y = y;
 	}
 
-	public GameObject(BufferedImage sprite, int colLength, int colWidth) {
+	public GameObject(int colWidth, int colLength, int colXOffset, int colYOffset) {
 		x = 0;
 		y = 0;
 		velX = 0;
@@ -31,7 +29,6 @@ public abstract class GameObject implements Serializable {
 			noCol = true;
 		else
 			noCol = false;
-		this.sprite = sprite;
 	}
 
 	public GameObject() {
@@ -39,9 +36,7 @@ public abstract class GameObject implements Serializable {
 
 	public abstract void tick();
 
-	public void render(Graphics g) {
-		// TODO Finish Render
-	}
+	public abstract void render(Graphics g);
 
 	public abstract void onCollide();
 

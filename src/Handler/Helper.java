@@ -5,11 +5,14 @@ import java.awt.Graphics;
 
 import javax.swing.JOptionPane;
 
+import GameObject.GameObject;
+
 public class Helper {
 
 	private int drawY, incY;
 	private GameInfo gameInfo;
 	private BuilderHandler builderHandler;
+	private GameHandler gameHandler;
 
 	public Helper(GameInfo gameInfo) {
 		this.gameInfo = gameInfo;
@@ -18,6 +21,10 @@ public class Helper {
 
 	public void setBuilderHandler(BuilderHandler builderHandler) {
 		this.builderHandler = builderHandler;
+	}
+
+	public void setGameHandler(GameHandler gameHandler) {
+		this.gameHandler = gameHandler;
 	}
 
 	public void reset() {
@@ -35,6 +42,12 @@ public class Helper {
 		g.drawString("", 15, drawY += incY);
 	}
 
+	public void drawDebugColBox(Graphics g) {
+		for (GameObject go : gameHandler.gameObjects()) {
+			go.hashCode();
+		}
+	}
+
 	public void drawBuilderDebug(Graphics g) {
 		g.setColor(Color.white);
 		g.drawString("World Builder Info:", 15, drawY += incY);
@@ -45,6 +58,7 @@ public class Helper {
 			g.drawString("X Locked Pos: " + (gameInfo.getMouseX() / 16) * 16 + ", Y Locked Pos: "
 					+ (gameInfo.getMouseY() / 16) * 16, 15, drawY += incY);
 		g.drawString("Selected Variation: " + builderHandler.selectedVar, 15, drawY += incY);
+		g.drawString("Map Difficulty: " + builderHandler.difficulty, 15, drawY += incY);
 		g.drawString("", 15, drawY += incY);
 	}
 

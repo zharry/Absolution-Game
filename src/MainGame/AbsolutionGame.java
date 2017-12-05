@@ -15,10 +15,10 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import GameObject.GameObjectAssets;
 import Handler.BuilderHandler;
 import Handler.GameHandler;
 import Handler.GameInfo;
+import Handler.GameObjectAssets;
 import Handler.Helper;
 
 /*
@@ -48,19 +48,13 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 	// Game Variables
 	GameInfo gameInfo;
 
-	public void reloadHandler(GameHandler handler) {
-		this.handler = handler;
-		builderHandler.gameHandler = handler;
-	}
-
-	public AbsolutionGame(String s, boolean worldBuilder, boolean debug) {
+	public AbsolutionGame(String s, boolean worldBuilder) {
 		super(s);
-		DEBUG = debug;
 		isBuilder = worldBuilder;
 
 		// Initialize Sprites
 		GameObjectAssets.initSprites();
-		
+
 		// Initialize Game Handlers
 		gameInfo = new GameInfo();
 		helper = new Helper(gameInfo);
@@ -69,10 +63,12 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 		if (worldBuilder) {
 			// Initialize World Builder Variables
 			GameInfo.width += GameInfo.builderWidth;
-			builderHandler = new BuilderHandler(gameInfo, this, handler);
+			builderHandler = new BuilderHandler(gameInfo, this);
 
-			// Update Helper to include BuilderHandler
+			// Update Handler References
+			builderHandler.setGameHandler(handler);
 			helper.setBuilderHandler(builderHandler);
+			helper.setGameHandler(handler);
 		}
 
 		// Initialize JFrame
@@ -158,9 +154,6 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 	}
 
 	public static void main(String[] args) {
-		// Debug Mode Selection
-		int debug = JOptionPane.showOptionDialog(null, "Print Debug Information on-screen?", "Absolution " + VERSION,
-				JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, new Object[] { "Yes", "No" }, "Yes");
 
 		// Launcher
 		int select = JOptionPane.showOptionDialog(null, "Welcome to Absolution!", "Absolution " + VERSION,
@@ -169,10 +162,10 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 
 		switch (select) {
 		case 0: // Start Challenge
-			new AbsolutionGame("Absolution " + VERSION, false, debug == 0);
+			new AbsolutionGame("Absolution " + VERSION, false);
 			break;
 		case 1: // Create World
-			new AbsolutionGame("Absolution " + VERSION + " | World Builder", true, debug == 0);
+			new AbsolutionGame("Absolution " + VERSION + " | World Builder", true);
 			break;
 		case 2: // View Highscores
 		default:
@@ -219,15 +212,19 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int k = e.getKeyCode();
-		if (isBuilder)
-			switch (k) {
-			case KeyEvent.VK_O:
+		switch (k) {
+		case KeyEvent.VK_O:
+			if (isBuilder)
 				builderHandler.incVar();
-				break;
-			case KeyEvent.VK_P:
+			break;
+		case KeyEvent.VK_P:
+			if (isBuilder)
 				builderHandler.decVar();
-				break;
-			}
+			break;
+		case KeyEvent.VK_F3:
+			DEBUG = !DEBUG;
+			break;
+		}
 	}
 
 	@Override

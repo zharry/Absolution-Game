@@ -1,18 +1,27 @@
 package Handler;
 
 import java.awt.Graphics;
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import GameObject.GameObject;
+import MainGame.Map;
 
-public class GameHandler implements Serializable {
+public class GameHandler {
 
-	private static final long serialVersionUID = -1961788191210149136L;
-
-	public ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
+	private ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
 
 	public GameHandler() {
+	}
+
+	public ArrayList<GameObject> gameObjects() {
+		return this.gameObjects;
+	}
+
+	public void importFromMap(Map m, boolean replace) {
+		if (replace)
+			gameObjects = m.gameObjects();
+		else
+			gameObjects.addAll(m.gameObjects());
 	}
 
 	public void render(Graphics g) {
@@ -21,7 +30,8 @@ public class GameHandler implements Serializable {
 	}
 
 	public void tick() {
-
+		for (GameObject go : gameObjects)
+			go.tick();
 	}
 
 	public ArrayList<GameObject> checkCollisionWith(GameObject obj) {
@@ -31,7 +41,7 @@ public class GameHandler implements Serializable {
 				inCollision.add(go);
 		return inCollision;
 	}
-	
+
 	public ArrayList<GameObject> checkSprOverlap(GameObject obj) {
 		ArrayList<GameObject> inCollision = new ArrayList<GameObject>();
 		for (GameObject go : gameObjects)
