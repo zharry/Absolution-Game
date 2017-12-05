@@ -1,4 +1,4 @@
-package MainGame;
+package Game;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;

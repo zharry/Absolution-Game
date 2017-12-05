@@ -22,15 +22,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import Game.AbsolutionGame;
+import Game.DropdownItem;
+import Game.DropdownSelect;
+import Game.Map;
 import GameObject.CheckPoint;
 import GameObject.GameObject;
 import GameObject.Player;
 import GameObject.PointColObj;
 import GameObject.Tile;
-import MainGame.AbsolutionGame;
-import MainGame.DropdownItem;
-import MainGame.DropdownSelect;
-import MainGame.Map;
 
 public class BuilderHandler extends JPanel {
 

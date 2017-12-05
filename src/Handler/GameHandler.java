@@ -3,12 +3,13 @@ package Handler;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+import Game.Map;
 import GameObject.GameObject;
-import MainGame.Map;
 
 public class GameHandler {
 
 	private ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
+	private ArrayList<Map> maps = new ArrayList<Map>();
 
 	public GameHandler() {
 	}
@@ -23,7 +24,7 @@ public class GameHandler {
 		else
 			gameObjects.addAll(m.gameObjects());
 	}
-
+	
 	public void render(Graphics g) {
 		for (GameObject object : gameObjects)
 			object.render(g);

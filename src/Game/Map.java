@@ -1,4 +1,4 @@
-package MainGame;
+package Game;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,10 +31,14 @@ public class Map implements Serializable {
 		int foundStart = 0, foundEnd = 0;
 		for (GameObject go : gameObjects) {
 			if (go instanceof CheckPoint) {
-				if (((CheckPoint) go).isStart())
+				CheckPoint cp = (CheckPoint) go;
+				if (cp.isStart()) {
+					start = cp;
 					foundStart++;
-				else
+				} else {
+					end = cp;
 					foundEnd++;
+				}
 			}
 		}
 		if (!(foundStart == 1 && foundEnd == 1))

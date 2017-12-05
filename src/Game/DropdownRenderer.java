@@ -1,4 +1,4 @@
-package MainGame;
+package Game;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -22,7 +22,7 @@ public class DropdownRenderer extends JPanel implements ListCellRenderer {
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.weightx = 1.0;
-        constraints.insets = new Insets(1, 4, 1, 2);
+        constraints.insets = new Insets(1, 2, 1, 2);
         labelItem.setOpaque(true);
         labelItem.setHorizontalAlignment(JLabel.LEFT);
         add(labelItem, constraints);

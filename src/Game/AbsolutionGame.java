@@ -1,4 +1,4 @@
-package MainGame;
+package Game;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -10,6 +10,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -69,6 +72,26 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 			builderHandler.setGameHandler(handler);
 			helper.setBuilderHandler(builderHandler);
 			helper.setGameHandler(handler);
+		} else {
+			// Initialize Maps
+			File mapsDir = new File("Maps");
+			for (File map : mapsDir.listFiles()) {
+				try {
+
+					// Load Map
+					FileInputStream fileIn = new FileInputStream(map);
+					ObjectInputStream in = new ObjectInputStream(fileIn);
+
+					// Import Map into Game
+					Map m = (Map) in.readObject();
+					handler.importFromMap(m, true);
+					in.close();
+					fileIn.close();
+					System.out.println(map + " Loaded");
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
 		}
 
 		// Initialize JFrame
