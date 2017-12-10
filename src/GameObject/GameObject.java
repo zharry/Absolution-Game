@@ -43,6 +43,14 @@ public abstract class GameObject implements Serializable {
 		return new int[] { x, y };
 	}
 
+	public int[] getVel() {
+		return new int[] { velX, velY };
+	}
+
+	public int[] getCol() {
+		return new int[] { colLength, colWidth, colXOffset, colYOffset };
+	}
+
 	public abstract void tick();
 
 	public abstract void render(Graphics g);

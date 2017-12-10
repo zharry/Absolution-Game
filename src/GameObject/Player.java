@@ -1,7 +1,6 @@
 package GameObject;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 
 import Handler.GameObjectAssets;
 
@@ -10,12 +9,13 @@ public class Player extends GameObject {
 	private static final long serialVersionUID = 3038088647945748368L;
 
 	// Movement
-	boolean goUp = false, goDown = false, goLeft = false, goRight = false;
-	int moveDist = 4;
+	public boolean goUp = false, goDown = false, goLeft = false, goRight = false;
+	int moveDist = 1;
 
 	// Animation
-	int curFrame = 0, frameTimer = 0, ticksPerFrame = 8;
-	int lastDir = 0;
+	public int curFrame = 0, frameTimer = 0, lastDir = 0;
+	final int ticksPerFrame = 6;
+	
 
 	public Player(int x, int y) {
 		super(x, y, 13, 5, 9, 41);
@@ -23,20 +23,27 @@ public class Player extends GameObject {
 
 	@Override
 	public void tick() {
-		if (this.goUp)
-			lastDir = 2;
-			this.velY = -this.moveDist;
-		if (this.goDown)
+		this.velX = 0;
+		this.velY = 0;
+		if (this.goUp) {
 			lastDir = 0;
+			this.velY = -this.moveDist;
+		}
+		if (this.goDown) {
+			lastDir = 2;
 			this.velY = this.moveDist;
-		if (this.goLeft)
+		}
+		if (this.goLeft) {
 			lastDir = 3;
 			this.velX = -this.moveDist;
-		if (this.goRight)
+		}
+		if (this.goRight) {
 			lastDir = 1;
 			this.velX = this.moveDist;
-		if (this.goUp && this.goDown)
+		}
+		if (this.goUp && this.goDown) {
 			this.velY = 0;
+		}
 		if (this.goLeft && this.goRight) {
 			this.velX = 0;
 		}

@@ -62,7 +62,7 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 
 		// Initialize Game Handlers
 		gameInfo = new GameInfo();
-		helper = new Helper(gameInfo);
+		helper = new Helper(gameInfo, this);
 		handler = new GameHandler(this);
 
 		if (worldBuilder) {
@@ -74,6 +74,10 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 			builderHandler.setGameHandler(handler);
 			helper.setBuilderHandler(builderHandler);
 			helper.setGameHandler(handler);
+
+			// Create Null Player Outside of Map
+			player = new Player(-100, -100);
+			handler.addGameObject(player);
 		} else {
 			// Initialize Maps
 			File mapsDir = new File("Maps");
@@ -100,8 +104,9 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 
 			// Create Player
 			int[] startLoc = handler.getSpawn();
-			System.out.println("" + startLoc[0] + "" +  startLoc[0]);
-			player = new Player(startLoc[0], startLoc[0]);
+			System.out.println("Spawn at: " + startLoc[0] + "," + startLoc[1]);
+			player = new Player(startLoc[0], startLoc[1]);
+			handler.addGameObject(player);
 		}
 
 		// Initialize JFrame
@@ -118,23 +123,38 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 		gamePanel = new JPanel() {
 			private static final long serialVersionUID = 4719297929190470247L;
 
+			@SuppressWarnings("static-access")
 			@Override
 			public void paint(Graphics g) {
 				// Reset Frame
 				g.setColor(new Color(0x211E27));
 				g.fillRect(0, 0, GameInfo.width, GameInfo.height);
+
+				// Move Camera to Player
+				if (!isBuilder)
+					g.translate(-player.getPos()[0] + gameInfo.width / 2, -player.getPos()[1] + gameInfo.height / 2);
+
 				// Render Game
 				handler.render(g);
 				if (isBuilder) {
 					builderHandler.render(g);
 					helper.drawBuilderGrid(g);
 				}
+
+				// Reset Camera to render UI
+				if (!isBuilder)
+					g.translate(player.getPos()[0] - gameInfo.width / 2, player.getPos()[1] - gameInfo.height / 2);
+				
+				// Render UI
 				if (DEBUG) {
 					helper.drawDebug(g);
 					if (isBuilder)
 						helper.drawBuilderDebug(g);
+					else
+						helper.drawPlayerDebug(g);
 					helper.reset();
 				}
+
 				gameInfo.setFPSProc(gameInfo.getFPSProc() + 1);
 			}
 		};
@@ -245,24 +265,35 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int k = e.getKeyCode();
-		switch (k) {
-		case KeyEvent.VK_O:
+		if (k == KeyEvent.VK_O)
 			if (isBuilder)
 				builderHandler.incVar();
-			break;
-		case KeyEvent.VK_P:
+		if (k == KeyEvent.VK_P)
 			if (isBuilder)
 				builderHandler.decVar();
-			break;
-		case KeyEvent.VK_F3:
+		if (k == KeyEvent.VK_F3)
 			DEBUG = !DEBUG;
-			break;
-		}
+		if (k == KeyEvent.VK_W || k == KeyEvent.VK_UP)
+			player.goUp = true;
+		if (k == KeyEvent.VK_S || k == KeyEvent.VK_DOWN)
+			player.goDown = true;
+		if (k == KeyEvent.VK_A || k == KeyEvent.VK_LEFT)
+			player.goLeft = true;
+		if (k == KeyEvent.VK_D || k == KeyEvent.VK_RIGHT)
+			player.goRight = true;
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
+		int k = e.getKeyCode();
+		if (k == KeyEvent.VK_W || k == KeyEvent.VK_UP)
+			player.goUp = false;
+		if (k == KeyEvent.VK_S || k == KeyEvent.VK_DOWN)
+			player.goDown = false;
+		if (k == KeyEvent.VK_A || k == KeyEvent.VK_LEFT)
+			player.goLeft = false;
+		if (k == KeyEvent.VK_D || k == KeyEvent.VK_RIGHT)
+			player.goRight = false;
 	}
 
 	public void mouseEntered(MouseEvent e) {

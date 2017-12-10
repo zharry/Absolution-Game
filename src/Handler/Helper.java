@@ -5,6 +5,7 @@ import java.awt.Graphics;
 
 import javax.swing.JOptionPane;
 
+import Game.AbsolutionGame;
 import GameObject.GameObject;
 
 public class Helper {
@@ -13,9 +14,11 @@ public class Helper {
 	private GameInfo gameInfo;
 	private BuilderHandler builderHandler;
 	private GameHandler gameHandler;
+	private AbsolutionGame mainRef;
 
-	public Helper(GameInfo gameInfo) {
+	public Helper(GameInfo gameInfo, AbsolutionGame mainRef) {
 		this.gameInfo = gameInfo;
+		this.mainRef = mainRef;
 		reset();
 	}
 
@@ -70,6 +73,24 @@ public class Helper {
 			for (int i = 0; i < GameInfo.height; i += 16)
 				g.drawLine(0, i, GameInfo.gameWidth, i);
 		}
+	}
+
+	public void drawPlayerDebug(Graphics g) {
+		g.setColor(Color.white);
+		g.drawString("Player Info:", 15, drawY += incY);
+		g.drawString("X: " + mainRef.player.getPos()[0] + " Y: " + mainRef.player.getPos()[1], 15, drawY += incY);
+		g.drawString("X Vel: " + mainRef.player.getVel()[0] + " Y Vel: " + mainRef.player.getVel()[1], 15,
+				drawY += incY);
+		g.drawString("Col X: " + mainRef.player.getCol()[0] + " Col Y: " + mainRef.player.getCol()[1], 15,
+				drawY += incY);
+		g.drawString("Col X Offset: " + mainRef.player.getCol()[2] + "  Col Y Offset: " + mainRef.player.getCol()[3],
+				15, drawY += incY);
+		g.drawString("Up: " + mainRef.player.goUp + " Down: " + mainRef.player.goDown, 15, drawY += incY);
+		g.drawString("Left: " + mainRef.player.goLeft + " Right:" + mainRef.player.goRight, 15, drawY += incY);
+		g.drawString("Draw Direction: " + mainRef.player.lastDir, 15, drawY += incY);
+		g.drawString("Frame Timer: " + mainRef.player.frameTimer + " Animation Frame: " + mainRef.player.curFrame, 15,
+				drawY += incY);
+		g.drawString("", 15, drawY += incY);
 	}
 
 	public static int displayError(String msg) {
