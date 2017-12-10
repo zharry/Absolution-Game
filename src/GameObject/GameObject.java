@@ -34,6 +34,15 @@ public abstract class GameObject implements Serializable {
 	public GameObject() {
 	}
 
+	public void setPos(int[] p) {
+		this.x = p[0];
+		this.y = p[1];
+	}
+
+	public int[] getPos() {
+		return new int[] { x, y };
+	}
+
 	public abstract void tick();
 
 	public abstract void render(Graphics g);

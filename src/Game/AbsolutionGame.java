@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import GameObject.Player;
 import Handler.BuilderHandler;
 import Handler.GameHandler;
 import Handler.GameInfo;
@@ -40,7 +41,7 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 
 	// Panel Variables
 	Container contentPane;
-	public GameHandler handler;
+	GameHandler handler;
 	JPanel gamePanel;
 	Helper helper;
 
@@ -50,6 +51,7 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 
 	// Game Variables
 	GameInfo gameInfo;
+	public Player player;
 
 	public AbsolutionGame(String s, boolean worldBuilder) {
 		super(s);
@@ -61,7 +63,7 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 		// Initialize Game Handlers
 		gameInfo = new GameInfo();
 		helper = new Helper(gameInfo);
-		handler = new GameHandler();
+		handler = new GameHandler(this);
 
 		if (worldBuilder) {
 			// Initialize World Builder Variables
@@ -77,14 +79,13 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 			File mapsDir = new File("Maps");
 			for (File map : mapsDir.listFiles()) {
 				try {
-
 					// Load Map
 					FileInputStream fileIn = new FileInputStream(map);
 					ObjectInputStream in = new ObjectInputStream(fileIn);
 
-					// Import Map into Game
+					// Import Map File Locations and Templates into Game
 					Map m = (Map) in.readObject();
-					handler.importFromMap(m, true);
+					handler.addMap(m);
 					in.close();
 					fileIn.close();
 					System.out.println(map + " Loaded");
@@ -92,6 +93,15 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 					ex.printStackTrace();
 				}
 			}
+
+			// Load Starting Maps
+			for (int i = 0; i < 3; i++)
+				handler.loadNextMap();
+
+			// Create Player
+			int[] startLoc = handler.getSpawn();
+			System.out.println("" + startLoc[0] + "" +  startLoc[0]);
+			player = new Player(startLoc[0], startLoc[0]);
 		}
 
 		// Initialize JFrame

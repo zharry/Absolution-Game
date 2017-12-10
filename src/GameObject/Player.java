@@ -24,12 +24,16 @@ public class Player extends GameObject {
 	@Override
 	public void tick() {
 		if (this.goUp)
+			lastDir = 2;
 			this.velY = -this.moveDist;
 		if (this.goDown)
+			lastDir = 0;
 			this.velY = this.moveDist;
 		if (this.goLeft)
+			lastDir = 3;
 			this.velX = -this.moveDist;
 		if (this.goRight)
+			lastDir = 1;
 			this.velX = this.moveDist;
 		if (this.goUp && this.goDown)
 			this.velY = 0;
@@ -48,16 +52,7 @@ public class Player extends GameObject {
 
 	@Override
 	public void render(Graphics g) {
-		BufferedImage toDraw = GameObjectAssets.playerToAsset(lastDir, curFrame);
-		if (this.goUp)
-			toDraw = GameObjectAssets.playerToAsset(lastDir = 0, curFrame);
-		if (this.goDown)
-			toDraw = GameObjectAssets.playerToAsset(lastDir = 2, curFrame);
-		if (this.goLeft)
-			toDraw = GameObjectAssets.playerToAsset(lastDir = 3, curFrame);
-		if (this.goRight)
-			toDraw = GameObjectAssets.playerToAsset(lastDir = 1, curFrame);
-		g.drawImage(toDraw, x, y, null);
+		g.drawImage(GameObjectAssets.sprPlayer[lastDir][curFrame], x, y, null);
 	}
 
 	@Override

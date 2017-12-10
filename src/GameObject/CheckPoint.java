@@ -19,10 +19,6 @@ public class CheckPoint extends GameObject {
 		return state;
 	}
 
-	public int[] getPos() {
-		return new int[] { x, y };
-	}
-
 	@Override
 	public void tick() {
 	}

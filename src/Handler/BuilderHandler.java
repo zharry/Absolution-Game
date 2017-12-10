@@ -175,6 +175,7 @@ public class BuilderHandler extends JPanel {
 							// Export Map
 							String filepath = c.getCurrentDirectory().toString() + "" + File.separator + ""
 									+ c.getSelectedFile().getName();
+							map.setName(c.getSelectedFile().getName());
 							FileOutputStream fileOut = new FileOutputStream(filepath);
 							ObjectOutputStream out = new ObjectOutputStream(fileOut);
 							out.writeObject(map);
@@ -211,7 +212,7 @@ public class BuilderHandler extends JPanel {
 
 						// Import Map
 						Map m = (Map) in.readObject();
-						gameHandler.importFromMap(m, true);
+						gameHandler.replaceMap(m);
 						difficultySelect.setSelectedIndex(m.difficulty());
 						difficulty = m.difficulty();
 

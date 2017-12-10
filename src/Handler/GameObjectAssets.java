@@ -193,25 +193,6 @@ public class GameObjectAssets {
 
 	}
 
-	public static BufferedImage playerToAsset(int direction, int variation) {
-		BufferedImage img;
-		switch (direction) {
-		case 0:
-			img = sprPlayer[0][variation];
-			break;
-		case 1:
-			img = sprPlayer[0][variation];
-			break;
-		case 2:
-			img = sprPlayer[0][variation];
-			break;
-		default:
-			img = sprPlayer[0][variation];
-			break;
-		}
-		return img;
-	}
-
 	public static BufferedImage idToAsset(int id, int variation) {
 		BufferedImage[] img;
 		int maxSprites;

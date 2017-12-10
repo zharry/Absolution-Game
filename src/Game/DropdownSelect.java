@@ -3,11 +3,12 @@ package Game;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
-@SuppressWarnings("serial")
+@SuppressWarnings({ "serial", "rawtypes" })
 public class DropdownSelect extends JComboBox {
 
 	private DefaultComboBoxModel<DropdownItem> model;
 
+	@SuppressWarnings("unchecked")
 	public DropdownSelect() {
 		model = new DefaultComboBoxModel<DropdownItem>();
 		setModel(model);

@@ -15,6 +15,7 @@ public class Map implements Serializable {
 	private int difficulty;
 
 	private CheckPoint start, end;
+	private String name;
 
 	public Map(int diff) {
 		difficulty = diff;
@@ -29,7 +30,7 @@ public class Map implements Serializable {
 
 		// Check to see if GameHandler has exactly 1 Start and End
 		int foundStart = 0, foundEnd = 0;
-		for (GameObject go : gameObjects) {
+		for (GameObject go : gameObjects)
 			if (go instanceof CheckPoint) {
 				CheckPoint cp = (CheckPoint) go;
 				if (cp.isStart()) {
@@ -40,7 +41,6 @@ public class Map implements Serializable {
 					foundEnd++;
 				}
 			}
-		}
 		if (!(foundStart == 1 && foundEnd == 1))
 			throw new Exception();
 	}
@@ -50,6 +50,21 @@ public class Map implements Serializable {
 		// 1 - Medium
 		// 2 - Hard
 		return difficulty;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public ArrayList<CheckPoint> getPoints() {
+		ArrayList<CheckPoint> points = new ArrayList<CheckPoint>();
+		points.add(start);
+		points.add(end);
+		return points;
 	}
 
 }
