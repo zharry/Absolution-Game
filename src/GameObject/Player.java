@@ -10,7 +10,7 @@ public class Player extends GameObject {
 
 	// Movement
 	public boolean goUp = false, goDown = false, goLeft = false, goRight = false;
-	int moveDist = 1;
+	int moveDist = 4;
 
 	// Animation
 	public int curFrame = 0, frameTimer = 0, lastDir = 0;

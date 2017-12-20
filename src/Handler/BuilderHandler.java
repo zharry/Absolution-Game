@@ -273,6 +273,8 @@ public class BuilderHandler extends JPanel {
 	}
 
 	public void setBuilderVar(int var) {
+		if (var < 0)
+			var = 0;
 		selectedVar = var;
 		variationSelect.setText(var + "");
 	}
@@ -291,7 +293,6 @@ public class BuilderHandler extends JPanel {
 		default:
 			gameHandler.addGameObject(new Tile(gridLockX, gridLockY, selectedID, selectedVar));
 		}
-		setBuilderVar(0);
 	}
 
 	public void dragAddNewGameObject() {
@@ -302,7 +303,7 @@ public class BuilderHandler extends JPanel {
 	}
 
 	public void removeGameObject() {
-		ArrayList<GameObject> inCol = gameHandler.checkSprOverlap(new PointColObj(gridLockX, gridLockY));
+		ArrayList<GameObject> inCol = gameHandler.checkCollisionWith(new PointColObj(gridLockX, gridLockY));
 		for (GameObject obj : inCol)
 			gameHandler.removeGameObject(obj);
 	}
