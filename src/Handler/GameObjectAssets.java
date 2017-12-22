@@ -19,7 +19,7 @@ public class GameObjectAssets {
 	// UI
 	public static BufferedImage skillBar, skillDisabled;
 	public static BufferedImage[] settings = new BufferedImage[2];
-	public static BufferedImage pointStart, pointEnd;
+	public static BufferedImage pointStart, pointEnd, vertLine, horLine;
 
 	// World
 	public static BufferedImage[] base = new BufferedImage[2];
@@ -70,6 +70,10 @@ public class GameObjectAssets {
 			// Checkpoints
 			pointStart = ImageIO.read(new File(UIDIR + "Point_Start.png"));
 			pointEnd = ImageIO.read(new File(UIDIR + "Point_End.png"));
+
+			// Line Cols
+			vertLine = ImageIO.read(new File(UIDIR + "VertLine.png"));
+			horLine = ImageIO.read(new File(UIDIR + "HorLine.png"));
 
 			// Base
 			i = 0;
@@ -245,6 +249,10 @@ public class GameObjectAssets {
 			return GameObjectAssets.pointStart;
 		case GameObjectRegistry.POINT_END:
 			return GameObjectAssets.pointEnd;
+		case GameObjectRegistry.COL_HOR:
+			return GameObjectAssets.horLine;
+		case GameObjectRegistry.COL_VERT:
+			return GameObjectAssets.vertLine;
 		default:
 			img = floor;
 			maxSprites = floor.length;

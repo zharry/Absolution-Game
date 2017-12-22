@@ -6,8 +6,8 @@ public class GameInfo {
 
 	public static int height = 640, width = 1040, gameWidth = 1040, builderWidth = 214;
 
-	private final int targetTPS = 60;
-	private boolean running, mouseDragging = false;
+	private final int targetTPS = 120;
+	private boolean running, mouseDragging = false, gameOver = false;
 	private int fps, fpsProc = 0, curTps, mouseX = 0, mouseY = 0, mouseButton = MouseEvent.NOBUTTON;
 
 	public GameInfo() {
@@ -73,6 +73,14 @@ public class GameInfo {
 
 	public boolean getMouseDragging() {
 		return mouseDragging;
+	}
+
+	public void setGameOver() {
+		gameOver = true;
+	}
+
+	public boolean isGameOver() {
+		return gameOver;
 	}
 
 }

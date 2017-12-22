@@ -45,10 +45,14 @@ public class Helper {
 		g.drawString("", 15, drawY += incY);
 	}
 
+	@SuppressWarnings("static-access")
 	public void drawDebugColBox(Graphics g) {
-		for (GameObject go : gameHandler.gameObjects()) {
-			go.hashCode();
-		}
+		g.setColor(Color.WHITE);
+		for (GameObject go : gameHandler.gameObjects())
+			if (go.hasCol())
+				g.drawRect(go.getPos()[0] + go.getCol()[2] - mainRef.player.getPos()[0] + gameInfo.width / 2,
+						go.getPos()[1]  + go.getCol()[3]- mainRef.player.getPos()[1] + gameInfo.height / 2,
+						go.getCol()[0], go.getCol()[1]);
 	}
 
 	public void drawBuilderDebug(Graphics g) {
@@ -81,10 +85,11 @@ public class Helper {
 		g.drawString("X: " + mainRef.player.getPos()[0] + " Y: " + mainRef.player.getPos()[1], 15, drawY += incY);
 		g.drawString("X Vel: " + mainRef.player.getVel()[0] + " Y Vel: " + mainRef.player.getVel()[1], 15,
 				drawY += incY);
-		g.drawString("Col X: " + mainRef.player.getCol()[0] + " Col Y: " + mainRef.player.getCol()[1], 15,
+		g.drawString("Col Width: " + mainRef.player.getCol()[0] + " Col Length: " + mainRef.player.getCol()[1], 15,
 				drawY += incY);
 		g.drawString("Col X Offset: " + mainRef.player.getCol()[2] + "  Col Y Offset: " + mainRef.player.getCol()[3],
 				15, drawY += incY);
+		g.drawString("Moveback: " + mainRef.player.moveBack, 15, drawY += incY);
 		g.drawString("Up: " + mainRef.player.goUp + " Down: " + mainRef.player.goDown, 15, drawY += incY);
 		g.drawString("Left: " + mainRef.player.goLeft + " Right:" + mainRef.player.goRight, 15, drawY += incY);
 		g.drawString("Draw Direction: " + mainRef.player.lastDir, 15, drawY += incY);

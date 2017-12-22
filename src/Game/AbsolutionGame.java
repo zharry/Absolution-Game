@@ -63,7 +63,8 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 		// Initialize Game Handlers
 		gameInfo = new GameInfo();
 		helper = new Helper(gameInfo, this);
-		handler = new GameHandler(this);
+		handler = new GameHandler(gameInfo, this);
+		helper.setGameHandler(handler);
 
 		if (worldBuilder) {
 			// Initialize World Builder Variables
@@ -73,7 +74,6 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 			// Update Handler References
 			builderHandler.setGameHandler(handler);
 			helper.setBuilderHandler(builderHandler);
-			helper.setGameHandler(handler);
 
 			// Create Null Player Outside of Map
 			player = new Player(-100, -100);
@@ -99,7 +99,7 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 			}
 
 			// Load Starting Maps
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < 2; i++)
 				handler.loadNextMap();
 
 			// Create Player
@@ -144,18 +144,28 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 				// Reset Camera to render UI
 				if (!isBuilder)
 					g.translate(player.getPos()[0] - gameInfo.width / 2, player.getPos()[1] - gameInfo.height / 2);
-				
+
 				// Render UI
 				if (DEBUG) {
 					helper.drawDebug(g);
 					if (isBuilder)
 						helper.drawBuilderDebug(g);
-					else
+					else {
 						helper.drawPlayerDebug(g);
+						helper.drawDebugColBox(g);
+					}
 					helper.reset();
 				}
 
 				gameInfo.setFPSProc(gameInfo.getFPSProc() + 1);
+
+				// If the Game is over
+				if (gameInfo.isGameOver()) {
+					g.setColor(Color.GRAY);
+					g.fillRect(0, 0, gameInfo.width, gameInfo.height);
+					g.setColor(Color.BLACK);
+					g.drawString("Game Over!", gameInfo.width / 2, gameInfo.height / 2);
+				}
 			}
 		};
 		gamePanel.addMouseListener(this);

@@ -28,7 +28,8 @@ import Game.DropdownSelect;
 import Game.Map;
 import GameObject.CheckPoint;
 import GameObject.GameObject;
-import GameObject.Player;
+import GameObject.LineColObjHor;
+import GameObject.LineColObjVert;
 import GameObject.PointColObj;
 import GameObject.Tile;
 
@@ -75,7 +76,9 @@ public class BuilderHandler extends JPanel {
 				new DropdownItem(GameObjectRegistry.TILE_WALL, "Wall", GameObjectAssets.wall[0]),
 				new DropdownItem(GameObjectRegistry.TILE_BASE, "Edge", GameObjectAssets.base[0]),
 				new DropdownItem(GameObjectRegistry.POINT_START, "Start Point", GameObjectAssets.pointStart),
-				new DropdownItem(GameObjectRegistry.POINT_END, "End Point", GameObjectAssets.pointEnd) });
+				new DropdownItem(GameObjectRegistry.POINT_END, "End Point", GameObjectAssets.pointEnd),
+				new DropdownItem(GameObjectRegistry.COL_VERT, "Vertical Collider", GameObjectAssets.vertLine),
+				new DropdownItem(GameObjectRegistry.COL_HOR, "Horizontal Collider", GameObjectAssets.horLine) });
 		IDSelect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectedID = ((DropdownItem) IDSelect.getSelectedItem()).val;
@@ -247,7 +250,10 @@ public class BuilderHandler extends JPanel {
 					g.drawImage(GameObjectAssets.pointStart, cp.getPos()[0], cp.getPos()[1], null);
 				else
 					g.drawImage(GameObjectAssets.pointEnd, cp.getPos()[0], cp.getPos()[1], null);
-			}
+			} else if (go instanceof LineColObjVert)
+				g.drawImage(GameObjectAssets.vertLine, go.getPos()[0], go.getPos()[1], null);
+			else if (go instanceof LineColObjHor)
+				g.drawImage(GameObjectAssets.horLine, go.getPos()[0], go.getPos()[1], null);
 		}
 	}
 
@@ -281,14 +287,17 @@ public class BuilderHandler extends JPanel {
 
 	public void addNewGameObject() {
 		switch (selectedID) {
-		case GameObjectRegistry.PLAYER:
-			gameHandler.addGameObject(new Player(gridLockX, gridLockY));
-			break;
 		case GameObjectRegistry.POINT_START:
 			gameHandler.addGameObject(new CheckPoint(gridLockX, gridLockY, true));
 			break;
 		case GameObjectRegistry.POINT_END:
 			gameHandler.addGameObject(new CheckPoint(gridLockX, gridLockY, false));
+			break;
+		case GameObjectRegistry.COL_VERT:
+			gameHandler.addGameObject(new LineColObjVert(gridLockX, gridLockY));
+			break;
+		case GameObjectRegistry.COL_HOR:
+			gameHandler.addGameObject(new LineColObjHor(gridLockX, gridLockY));
 			break;
 		default:
 			gameHandler.addGameObject(new Tile(gridLockX, gridLockY, selectedID, selectedVar));
@@ -296,14 +305,13 @@ public class BuilderHandler extends JPanel {
 	}
 
 	public void dragAddNewGameObject() {
-		// TODO Change to template based object creation
 		ArrayList<GameObject> inCol = gameHandler.checkSprOverlap(new PointColObj(gridLockX, gridLockY));
 		if (inCol.size() == 0)
 			addNewGameObject();
 	}
 
 	public void removeGameObject() {
-		ArrayList<GameObject> inCol = gameHandler.checkCollisionWith(new PointColObj(gridLockX, gridLockY));
+		ArrayList<GameObject> inCol = gameHandler.checkSprOverlap(new PointColObj(gridLockX, gridLockY));
 		for (GameObject obj : inCol)
 			gameHandler.removeGameObject(obj);
 	}

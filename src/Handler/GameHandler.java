@@ -11,12 +11,17 @@ import Game.AbsolutionGame;
 import Game.Map;
 import GameObject.CheckPoint;
 import GameObject.GameObject;
+import GameObject.LineColObjHor;
+import GameObject.LineColObjVert;
 import GameObject.Player;
+import GameObject.PointColObj;
+import GameObject.Tile;
 
 public class GameHandler {
 
 	Random r = new Random();
 	AbsolutionGame mainRef;
+	GameInfo gameInfo;
 
 	private int[] spawn;
 
@@ -29,8 +34,9 @@ public class GameHandler {
 
 	int stage, displayStage;
 
-	public GameHandler(AbsolutionGame main) {
+	public GameHandler(GameInfo g, AbsolutionGame main) {
 		this.mainRef = main;
+		this.gameInfo = g;
 		stage = 0;
 	}
 
@@ -119,8 +125,10 @@ public class GameHandler {
 			lastEnd = map.getPoints().get(1);
 			for (GameObject go : map.gameObjects())
 				if (go instanceof CheckPoint)
-					if (((CheckPoint) go).isStart())
+					if (((CheckPoint) go).isStart()) {
 						spawn = go.getPos();
+						spawn[1] -= 16;
+					}
 		} else {
 			CheckPoint start = map.getPoints().get(0), end = map.getPoints().get(1);
 			for (GameObject go : map.gameObjects()) {
@@ -143,11 +151,64 @@ public class GameHandler {
 			if (!(object instanceof Player))
 				object.render(g);
 		mainRef.player.render(g);
+		
+		// Render UI
+		
 	}
 
 	public void tick() {
+		// Generate Map as player moves
+		System.out.println(mainRef.player.getPos()[1] + " - " + (lastEnd.getPos()[1] + 2000));
+		if (mainRef.player.getPos()[1] <= lastEnd.getPos()[1] + 2000)
+			loadNextMap();
+
 		for (GameObject go : gameObjects)
 			go.tick();
+
+		// Check Player Collision
+		// Top-Left
+		PointColObj cTL = new PointColObj(mainRef.player.getPos()[0] + mainRef.player.getCol()[2],
+				mainRef.player.getPos()[1] + mainRef.player.getCol()[3]);
+		// Top-Right
+		PointColObj cTR = new PointColObj(mainRef.player.getPos()[0] + mainRef.player.getCol()[2],
+				mainRef.player.getPos()[1] + mainRef.player.getCol()[3] + mainRef.player.getCol()[1]);
+		// Bottom-Left
+		PointColObj cBL = new PointColObj(
+				mainRef.player.getPos()[0] + mainRef.player.getCol()[2] + mainRef.player.getCol()[0],
+				mainRef.player.getPos()[1] + mainRef.player.getCol()[3]);
+		// Bottom-Right
+		PointColObj cBR = new PointColObj(
+				mainRef.player.getPos()[0] + mainRef.player.getCol()[2] + mainRef.player.getCol()[0],
+				mainRef.player.getPos()[1] + mainRef.player.getCol()[3] + mainRef.player.getCol()[1]);
+
+		// Inverse Collision, no part of the player's ColBox should be not
+		// colliding...
+		if (checkCollisionWith(cTL).size() == 0 || checkCollisionWith(cTR).size() == 0
+				|| checkCollisionWith(cBL).size() == 0 || checkCollisionWith(cBR).size() == 0) {
+			// If it would have left the bounding box of the floor, reverse the
+			// player's posiiton
+			mainRef.player.moveBack = true;
+		} else
+			mainRef.player.moveBack = false;
+
+		// Check General Collision
+		ArrayList<GameObject> allCol = checkCollisionWith(mainRef.player);
+		for (GameObject go : allCol) {
+			if (go instanceof Tile) {
+				Tile gameTile = (Tile) go;
+				if (gameTile.type == GameObjectRegistry.TILE_WALL || gameTile.type == GameObjectRegistry.TILE_BASE
+						|| gameTile.type == GameObjectRegistry.TILE_DOOR
+						|| gameTile.type == GameObjectRegistry.TILE_SEWER
+						|| (gameTile.type == GameObjectRegistry.TILE_WATERFALL && gameTile.variation == 0)) {
+					mainRef.player.moveBack = true;
+					break;
+				}
+			} else if (go instanceof LineColObjHor || go instanceof LineColObjVert) {
+				mainRef.player.moveBack = true;
+				break;
+			}
+
+		}
 	}
 
 	public ArrayList<GameObject> checkCollisionWith(GameObject obj) {

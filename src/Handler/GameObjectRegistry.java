@@ -18,4 +18,7 @@ public class GameObjectRegistry {
 	public static final int POINT_START = 12;
 	public static final int POINT_END = 13;
 
+	public static final int COL_VERT = 14;
+	public static final int COL_HOR = 15;
+
 }

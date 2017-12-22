@@ -25,6 +25,8 @@ public abstract class GameObject implements Serializable {
 		velY = 0;
 		this.colLength = colLength;
 		this.colWidth = colWidth;
+		this.colXOffset = colXOffset;
+		this.colYOffset = colYOffset;
 		if (colLength == 0 && colWidth == 0)
 			noCol = true;
 		else
@@ -47,8 +49,12 @@ public abstract class GameObject implements Serializable {
 		return new int[] { velX, velY };
 	}
 
+	public boolean hasCol() {
+		return !noCol;
+	}
+
 	public int[] getCol() {
-		return new int[] { colLength, colWidth, colXOffset, colYOffset };
+		return new int[] { colWidth, colLength, colXOffset, colYOffset };
 	}
 
 	public abstract void tick();
@@ -58,10 +64,12 @@ public abstract class GameObject implements Serializable {
 	public abstract void onCollide();
 
 	public boolean isCollide(GameObject other) {
-		if (noCol)
+		if (noCol || other.noCol)
 			return false;
-		if ((this.x < other.x + other.colLength && this.x + this.colLength > other.x
-				&& this.y < other.y + other.colWidth && this.y + this.colWidth > other.y))
+		if ((this.x + this.colXOffset < other.x + other.colWidth + other.colXOffset
+				&& this.x + this.colWidth + this.colXOffset > other.x + other.colXOffset
+				&& this.y + this.colYOffset < other.y + other.colYOffset + other.colLength
+				&& this.y + this.colYOffset + this.colLength > other.y + other.colYOffset))
 			return true;
 		return false;
 	}
@@ -73,7 +81,7 @@ public abstract class GameObject implements Serializable {
 			return true;
 		return false;
 	}
-
+	
 	public void move() {
 		this.x += this.velX;
 		this.y += this.velY;

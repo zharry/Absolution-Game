@@ -10,19 +10,29 @@ public class Player extends GameObject {
 
 	// Movement
 	public boolean goUp = false, goDown = false, goLeft = false, goRight = false;
-	int moveDist = 4;
+	int moveDist = 1;
 
 	// Animation
 	public int curFrame = 0, frameTimer = 0, lastDir = 0;
-	final int ticksPerFrame = 6;
-	
+	final int ticksPerFrame = 15;
+	boolean freezeFrame;
+
+	// Moveback
+	public boolean moveBack = false;
 
 	public Player(int x, int y) {
-		super(x, y, 13, 5, 9, 41);
+		super(x, y, 16, 5, 8, 38);
 	}
 
 	@Override
 	public void tick() {
+		// Previous tick collision response
+		if (moveBack) {
+			this.x -= velX;
+			this.y -= velY;
+		}
+
+		// Check Keys
 		this.velX = 0;
 		this.velY = 0;
 		if (this.goUp) {
@@ -47,13 +57,23 @@ public class Player extends GameObject {
 		if (this.goLeft && this.goRight) {
 			this.velX = 0;
 		}
+
+		// Set New Position
 		this.x += this.velX;
 		this.y += this.velY;
 
-		frameTimer++;
-		if (frameTimer > ticksPerFrame) {
+		if (!goUp && !goDown && !goLeft && !goRight) {
+			freezeFrame = true;
+			curFrame = 0;
 			frameTimer = 0;
-			curFrame = (curFrame + 1) % 4;
+		} else
+			freezeFrame = false;
+		if (!freezeFrame) {
+			frameTimer++;
+			if (frameTimer > ticksPerFrame) {
+				frameTimer = 0;
+				curFrame = (curFrame + 1) % 4;
+			}
 		}
 	}
 
