@@ -146,6 +146,7 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 					g.translate(player.getPos()[0] - gameInfo.width / 2, player.getPos()[1] - gameInfo.height / 2);
 
 				// Render UI
+				handler.renderIU(g);
 				if (DEBUG) {
 					helper.drawDebug(g);
 					if (isBuilder)
@@ -291,6 +292,8 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 			player.goLeft = true;
 		if (k == KeyEvent.VK_D || k == KeyEvent.VK_RIGHT)
 			player.goRight = true;
+		if (k == KeyEvent.VK_I)
+			handler.toggleUI();
 	}
 
 	@Override

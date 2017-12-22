@@ -24,6 +24,7 @@ public class GameHandler {
 	GameInfo gameInfo;
 
 	private int[] spawn;
+	private boolean ui;
 
 	private ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
 	private ArrayList<String> easyMaps = new ArrayList<String>();
@@ -38,6 +39,7 @@ public class GameHandler {
 		this.mainRef = main;
 		this.gameInfo = g;
 		stage = 0;
+		ui = true;
 	}
 
 	public ArrayList<GameObject> gameObjects() {
@@ -146,19 +148,26 @@ public class GameHandler {
 		return spawn;
 	}
 
+	public void toggleUI() {
+		ui = !ui;
+	}
+
 	public void render(Graphics g) {
 		for (GameObject object : gameObjects)
 			if (!(object instanceof Player))
 				object.render(g);
 		mainRef.player.render(g);
-		
+	}
+	
+	public void renderIU(Graphics g) {
 		// Render UI
-		
+		if (ui) {
+			g.drawImage(GameObjectAssets.skillBar, gameInfo.width/ 2 - 360 / 2, gameInfo.height - 80, null);
+		}
 	}
 
 	public void tick() {
 		// Generate Map as player moves
-		System.out.println(mainRef.player.getPos()[1] + " - " + (lastEnd.getPos()[1] + 2000));
 		if (mainRef.player.getPos()[1] <= lastEnd.getPos()[1] + 2000)
 			loadNextMap();
 
