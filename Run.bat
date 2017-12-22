@@ -1,4 +1,7 @@
 @echo off
+echo Removing Old Versions...
+del /q /f /s output
+rd output
 echo Compiling...
 dir sources.txt
 setlocal enabledelayedexpansion

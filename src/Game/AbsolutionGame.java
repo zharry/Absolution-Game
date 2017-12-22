@@ -44,6 +44,7 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 	GameHandler handler;
 	JPanel gamePanel;
 	Helper helper;
+	Object lock;
 
 	// World Builder Variables
 	boolean isBuilder;
@@ -55,6 +56,7 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 
 	public AbsolutionGame(String s, boolean worldBuilder) {
 		super(s);
+		lock = new Object();
 		isBuilder = worldBuilder;
 
 		// Initialize Sprites
@@ -126,48 +128,52 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 			@SuppressWarnings("static-access")
 			@Override
 			public void paint(Graphics g) {
-				// Reset Frame
-				g.setColor(new Color(0x211E27));
-				g.fillRect(0, 0, GameInfo.width, GameInfo.height);
+				synchronized (lock) {
 
-				// Move Camera to Player
-				if (!isBuilder)
-					g.translate(-player.getPos()[0] + gameInfo.width / 2, -player.getPos()[1] + gameInfo.height / 2);
+					// Reset Frame
+					g.setColor(new Color(0x211E27));
+					g.fillRect(0, 0, GameInfo.width, GameInfo.height);
 
-				// Render Game
-				handler.render(g);
-				if (isBuilder) {
-					builderHandler.render(g);
-					helper.drawBuilderGrid(g);
-				}
+					// Move Camera to Player
+					if (!isBuilder)
+						g.translate(-player.getPos()[0] + gameInfo.width / 2,
+								-player.getPos()[1] + gameInfo.height / 2);
 
-				// Reset Camera
-				if (!isBuilder) {
-					g.translate(player.getPos()[0] - gameInfo.width / 2, player.getPos()[1] - gameInfo.height / 2);
-					// Render UI
-					handler.renderIU(g);
-				}
-
-				// Render Debug
-				if (DEBUG) {
-					helper.drawDebug(g);
-					if (isBuilder)
-						helper.drawBuilderDebug(g);
-					else {
-						helper.drawPlayerDebug(g);
-						helper.drawDebugColBox(g);
+					// Render Game
+					handler.render(g);
+					if (isBuilder) {
+						builderHandler.render(g);
+						helper.drawBuilderGrid(g);
 					}
-					helper.reset();
-				}
 
-				gameInfo.setFPSProc(gameInfo.getFPSProc() + 1);
+					// Reset Camera
+					if (!isBuilder) {
+						g.translate(player.getPos()[0] - gameInfo.width / 2, player.getPos()[1] - gameInfo.height / 2);
+						// Render UI
+						handler.renderIU(g);
+					}
 
-				// If the Game is over
-				if (gameInfo.isGameOver()) {
-					g.setColor(Color.GRAY);
-					g.fillRect(0, 0, gameInfo.width, gameInfo.height);
-					g.setColor(Color.BLACK);
-					g.drawString("Game Over!", gameInfo.width / 2, gameInfo.height / 2);
+					// Render Debug
+					if (DEBUG) {
+						helper.drawDebug(g);
+						if (isBuilder)
+							helper.drawBuilderDebug(g);
+						else {
+							helper.drawPlayerDebug(g);
+							helper.drawDebugColBox(g);
+						}
+						helper.reset();
+					}
+
+					gameInfo.setFPSProc(gameInfo.getFPSProc() + 1);
+
+					// If the Game is over
+					if (gameInfo.isGameOver()) {
+						g.setColor(Color.GRAY);
+						g.fillRect(0, 0, gameInfo.width, gameInfo.height);
+						g.setColor(Color.BLACK);
+						g.drawString("Game Over!", gameInfo.width / 2, gameInfo.height / 2);
+					}
 				}
 			}
 		};
@@ -192,14 +198,16 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 			long curTime = System.nanoTime();
 			delta += (curTime - lastTime) / ns;
 			lastTime = curTime;
-			while (delta >= 1) {
-				// Process Game Changes
-				if (!isBuilder)
-					handler.tick();
-				else
-					builderHandler.tick();
-				tpsProc++;
-				delta--;
+			synchronized (lock) {
+				while (delta >= 1) {
+					// Process Game Changes
+					if (!isBuilder)
+						handler.tick();
+					else
+						builderHandler.tick();
+					tpsProc++;
+					delta--;
+				}
 			}
 			// Update the Graphics
 			gamePanel.repaint();
