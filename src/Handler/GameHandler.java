@@ -96,7 +96,7 @@ public class GameHandler {
 
 		String mapName = "";
 		int easyGen = r.nextInt(100), medGen = r.nextInt(100);
-		System.out.println("Easy Gen: (" + easy + ")" + easyGen + " | Med Gen: (" + med + ")" + medGen);
+		System.out.println("Stage: " +stage + " - Easy Gen: (" + easy + ")" + easyGen + " | Med Gen: (" + med + ")" + medGen);
 		if (easyGen < easy) {
 			mapName = easyMaps.get(r.nextInt(easyMaps.size()));
 			System.out.println("Easy Map: " + mapName);

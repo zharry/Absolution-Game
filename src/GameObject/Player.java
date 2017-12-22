@@ -14,7 +14,7 @@ public class Player extends GameObject {
 
 	// Animation
 	public int curFrame = 0, frameTimer = 0, lastDir = 0;
-	final int ticksPerFrame = 15;
+	final int ticksPerFrame = 14;
 	boolean freezeFrame;
 
 	// Moveback
