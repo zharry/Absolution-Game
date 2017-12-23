@@ -7,12 +7,20 @@ import Handler.GameObjectAssets;
 public class Tile extends GameObject {
 
 	private static final long serialVersionUID = 8584770631071877315L;
-	public int type, variation;
+	private int type, variation;
 
 	public Tile(int x, int y, int type, int variation) {
 		super(x, y, 32, 32, 0, 0);
 		this.type = type;
 		this.variation = variation;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public int getVar() {
+		return variation;
 	}
 
 	public void incVar() {

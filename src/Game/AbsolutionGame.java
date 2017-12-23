@@ -36,23 +36,27 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 
 	// Constants
 	private static final long serialVersionUID = 1687245374428417477L;
-	static final String VERSION = "v0.1";
-	boolean DEBUG = false;
+	private static final String VERSION = "v1.1";
+	private boolean DEBUG = false;
 
 	// Panel Variables
-	Container contentPane;
-	GameHandler handler;
-	JPanel gamePanel;
-	Helper helper;
-	Object lock;
+	private Container contentPane;
+	private GameHandler handler;
+	private JPanel gamePanel;
+	private Helper helper;
+	private Object lock;
 
 	// World Builder Variables
-	boolean isBuilder;
-	BuilderHandler builderHandler; // JPanel + Handler Bundle
+	private boolean isBuilder;
+	private BuilderHandler builderHandler; // JPanel + Handler Bundle
 
 	// Game Variables
-	GameInfo gameInfo;
-	public Player player;
+	private GameInfo gameInfo;
+	private Player player;
+
+	public Player player() {
+		return player;
+	}
 
 	public AbsolutionGame(String s, boolean worldBuilder) {
 		super(s);
@@ -71,11 +75,10 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 		if (worldBuilder) {
 			// Initialize World Builder Variables
 			GameInfo.width += GameInfo.builderWidth;
-			builderHandler = new BuilderHandler(gameInfo, this);
+			builderHandler = new BuilderHandler(gameInfo, this, helper);
 
 			// Update Handler References
 			builderHandler.setGameHandler(handler);
-			helper.setBuilderHandler(builderHandler);
 
 			// Create Null Player Outside of Map
 			player = new Player(-100, -100);
@@ -143,7 +146,7 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 					handler.render(g);
 					if (isBuilder) {
 						builderHandler.render(g);
-						helper.drawBuilderGrid(g);
+						builderHandler.drawBuilderGrid(g);
 					}
 
 					// Reset Camera
@@ -157,7 +160,7 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 					if (DEBUG) {
 						helper.drawDebug(g);
 						if (isBuilder)
-							helper.drawBuilderDebug(g);
+							builderHandler.drawBuilderDebug(g);
 						else {
 							helper.drawPlayerDebug(g);
 							helper.drawDebugColBox(g);
@@ -295,13 +298,13 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 		if (k == KeyEvent.VK_F3)
 			DEBUG = !DEBUG;
 		if (k == KeyEvent.VK_W || k == KeyEvent.VK_UP)
-			player.goUp = true;
+			player.setMoveUp(true);
 		if (k == KeyEvent.VK_S || k == KeyEvent.VK_DOWN)
-			player.goDown = true;
+			player.setMoveDown(true);
 		if (k == KeyEvent.VK_A || k == KeyEvent.VK_LEFT)
-			player.goLeft = true;
+			player.setMoveLeft(true);
 		if (k == KeyEvent.VK_D || k == KeyEvent.VK_RIGHT)
-			player.goRight = true;
+			player.setMoveRight(true);
 		if (k == KeyEvent.VK_E)
 			handler.toggleUI();
 	}
@@ -310,13 +313,13 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 	public void keyReleased(KeyEvent e) {
 		int k = e.getKeyCode();
 		if (k == KeyEvent.VK_W || k == KeyEvent.VK_UP)
-			player.goUp = false;
+			player.setMoveUp(false);
 		if (k == KeyEvent.VK_S || k == KeyEvent.VK_DOWN)
-			player.goDown = false;
+			player.setMoveDown(false);
 		if (k == KeyEvent.VK_A || k == KeyEvent.VK_LEFT)
-			player.goLeft = false;
+			player.setMoveLeft(false);
 		if (k == KeyEvent.VK_D || k == KeyEvent.VK_RIGHT)
-			player.goRight = false;
+			player.setMoveRight(false);
 	}
 
 	public void mouseEntered(MouseEvent e) {

@@ -35,8 +35,8 @@ public class DropdownRenderer extends JPanel implements ListCellRenderer {
 
 		// Create Element
 		DropdownItem item = (DropdownItem) value;
-		labelItem.setText(item.desc);
-		labelItem.setIcon(new ImageIcon(item.icon));
+		labelItem.setText(item.getDesc());
+		labelItem.setIcon(new ImageIcon(item.getIcon()));
 
 		if (isSelected) {
 			labelItem.setBackground(Color.GRAY);

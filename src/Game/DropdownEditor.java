@@ -45,7 +45,7 @@ public class DropdownEditor extends BasicComboBoxEditor {
 		}
 		DropdownItem item = (DropdownItem) obj;
 		selectedValue = item;
-		labelItem.setText(selectedValue.desc);
-		labelItem.setIcon(new ImageIcon(item.icon));
+		labelItem.setText(selectedValue.getDesc());
+		labelItem.setIcon(new ImageIcon(item.getIcon()));
 	}
 }

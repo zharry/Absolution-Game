@@ -1,6 +1,7 @@
 package Handler;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -40,19 +41,46 @@ public class BuilderHandler extends JPanel {
 
 	private GameHandler gameHandler;
 	private GameInfo gameInfo;
+	private Helper helper;
 
-	DropdownSelect IDSelect;
-	int selectedID;
-	JCheckBox gridLockCheck, gridLockShow;
-	JComboBox<String> difficultySelect;
-	int difficulty = 0;
-	boolean gridLock, showGrid;
+	private DropdownSelect IDSelect;
+	private int selectedID;
+	private JCheckBox gridLockCheck, gridLockShow;
+	private JComboBox<String> difficultySelect;
+	private int difficulty = 0;
+	private boolean gridLock, showGrid;
 	private int gridLockX = 0, gridLockY = 0; // If it's not gridlocked, it's
 												// the same as mouseX and mouseY
-	JTextField variationSelect;
-	int selectedVar;
+	private JTextField variationSelect;
+	private int selectedVar;
 
-	public BuilderHandler(GameInfo gameInfo, AbsolutionGame game) {
+	public void drawBuilderDebug(Graphics g) {
+		int drawY = helper.getCurrentY();
+		g.setColor(Color.white);
+		g.drawString("World Builder Info:", 15, drawY += Helper.incY);
+		g.drawString("Selected ID: " + selectedID, 15, drawY += Helper.incY);
+		g.drawString("Grid Locked: " + gridLock, 15, drawY += Helper.incY);
+		g.drawString("Showing Grid: " + showGrid, 15, drawY += Helper.incY);
+		if (gridLock)
+			g.drawString("X Locked Pos: " + (gameInfo.getMouseX() / 16) * 16 + ", Y Locked Pos: "
+					+ (gameInfo.getMouseY() / 16) * 16, 15, drawY += Helper.incY);
+		g.drawString("Selected Variation: " + selectedVar, 15, drawY += Helper.incY);
+		g.drawString("Map Difficulty: " + difficulty, 15, drawY += Helper.incY);
+		g.drawString("", 15, drawY += Helper.incY);
+		helper.setDrawY(drawY);
+	}
+
+	public void drawBuilderGrid(Graphics g) {
+		if (gridLock && showGrid) {
+			g.setColor(new Color(0x303030));
+			for (int i = 0; i < GameInfo.gameWidth; i += 16)
+				g.drawLine(i, 0, i, GameInfo.height);
+			for (int i = 0; i < GameInfo.height; i += 16)
+				g.drawLine(0, i, GameInfo.gameWidth, i);
+		}
+	}
+
+	public BuilderHandler(GameInfo gameInfo, AbsolutionGame game, Helper helper) {
 		this.gameInfo = gameInfo;
 
 		setLayout(new FlowLayout(FlowLayout.LEFT, 7, 10));
@@ -83,7 +111,7 @@ public class BuilderHandler extends JPanel {
 				new DropdownItem(GameObjectRegistry.COL_HOR, "Horizontal Collider", GameObjectAssets.horLine) });
 		IDSelect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selectedID = ((DropdownItem) IDSelect.getSelectedItem()).val;
+				selectedID = ((DropdownItem) IDSelect.getSelectedItem()).getVal();
 				setBuilderVar(0);
 			}
 		});

@@ -22,9 +22,9 @@ import GameObject.Tile;
 
 public class GameHandler {
 
-	Random r = new Random();
-	AbsolutionGame mainRef;
-	GameInfo gameInfo;
+	private Random r = new Random();
+	private AbsolutionGame mainRef;
+	private GameInfo gameInfo;
 
 	private int[] spawn;
 	private boolean ui;
@@ -36,8 +36,7 @@ public class GameHandler {
 	private ArrayList<String> allMaps = new ArrayList<String>();
 
 	private CheckPoint lastEnd;
-
-	int stage, displayStage;
+	private int stage;
 
 	public GameHandler(GameInfo g, AbsolutionGame main) {
 		this.mainRef = main;
@@ -126,7 +125,7 @@ public class GameHandler {
 		for (GameObject object : gameObjects)
 			if (!(object instanceof Player))
 				object.render(g);
-		mainRef.player.render(g);
+		mainRef.player().render(g);
 	}
 
 	@SuppressWarnings("static-access")
@@ -138,11 +137,11 @@ public class GameHandler {
 			for (; skill < 6; skill++) {
 				g.setColor(Color.WHITE);
 				dX += xInc;
-				if (mainRef.player.skillCount[skill] != 0)
-					g.drawString(mainRef.player.skillCount[skill] + "", dX, dY);
+				if (mainRef.player().getInv()[skill] != 0)
+					g.drawString(mainRef.player().getInv()[skill] + "", dX, dY);
 			}
-			if (mainRef.player.skillCount[skill] != 0)
-				g.drawString(mainRef.player.skillCount[skill] + "", dX += 72, dY);
+			if (mainRef.player().getInv()[skill] != 0)
+				g.drawString(mainRef.player().getInv()[skill] + "", dX += 72, dY);
 		}
 
 		// Draw Score counter
@@ -155,7 +154,7 @@ public class GameHandler {
 
 	public void tick() {
 		// Generate Map as player moves
-		if (mainRef.player.getPos()[1] <= lastEnd.getPos()[1] + 2000)
+		if (mainRef.player().getPos()[1] <= lastEnd.getPos()[1] + 2000)
 			loadNextMap();
 
 		for (GameObject go : gameObjects)
@@ -163,19 +162,19 @@ public class GameHandler {
 
 		// Check Player Collision
 		// Top-Left
-		PointColObj cTL = new PointColObj(mainRef.player.getPos()[0] + mainRef.player.getCol()[2],
-				mainRef.player.getPos()[1] + mainRef.player.getCol()[3]);
+		PointColObj cTL = new PointColObj(mainRef.player().getPos()[0] + mainRef.player().getCol()[2],
+				mainRef.player().getPos()[1] + mainRef.player().getCol()[3]);
 		// Top-Right
-		PointColObj cTR = new PointColObj(mainRef.player.getPos()[0] + mainRef.player.getCol()[2],
-				mainRef.player.getPos()[1] + mainRef.player.getCol()[3] + mainRef.player.getCol()[1]);
+		PointColObj cTR = new PointColObj(mainRef.player().getPos()[0] + mainRef.player().getCol()[2],
+				mainRef.player().getPos()[1] + mainRef.player().getCol()[3] + mainRef.player().getCol()[1]);
 		// Bottom-Left
 		PointColObj cBL = new PointColObj(
-				mainRef.player.getPos()[0] + mainRef.player.getCol()[2] + mainRef.player.getCol()[0],
-				mainRef.player.getPos()[1] + mainRef.player.getCol()[3]);
+				mainRef.player().getPos()[0] + mainRef.player().getCol()[2] + mainRef.player().getCol()[0],
+				mainRef.player().getPos()[1] + mainRef.player().getCol()[3]);
 		// Bottom-Right
 		PointColObj cBR = new PointColObj(
-				mainRef.player.getPos()[0] + mainRef.player.getCol()[2] + mainRef.player.getCol()[0],
-				mainRef.player.getPos()[1] + mainRef.player.getCol()[3] + mainRef.player.getCol()[1]);
+				mainRef.player().getPos()[0] + mainRef.player().getCol()[2] + mainRef.player().getCol()[0],
+				mainRef.player().getPos()[1] + mainRef.player().getCol()[3] + mainRef.player().getCol()[1]);
 
 		// Inverse Collision, no part of the player's ColBox should be not
 		// colliding...
@@ -183,28 +182,29 @@ public class GameHandler {
 				|| checkCollisionWith(cBL).size() == 0 || checkCollisionWith(cBR).size() == 0) {
 			// If it would have left the bounding box of the floor, reverse the
 			// player's posiiton
-			mainRef.player.moveBack = true;
+			mainRef.player().setMoveBack(true);
 		} else
-			mainRef.player.moveBack = false;
+			mainRef.player().setMoveBack(false);
 
 		// Check General Collision
-		ArrayList<GameObject> allCol = checkCollisionWith(mainRef.player);
+		ArrayList<GameObject> allCol = checkCollisionWith(mainRef.player());
 		for (GameObject go : allCol) {
 			if (go instanceof Tile) {
 				Tile gameTile = (Tile) go;
-				if (gameTile.type == GameObjectRegistry.TILE_WALL || gameTile.type == GameObjectRegistry.TILE_BASE
-						|| gameTile.type == GameObjectRegistry.TILE_DOOR
-						|| gameTile.type == GameObjectRegistry.TILE_SEWER
-						|| (gameTile.type == GameObjectRegistry.TILE_WATERFALL && gameTile.variation == 0)) {
-					mainRef.player.moveBack = true;
+				if (gameTile.getType() == GameObjectRegistry.TILE_WALL
+						|| gameTile.getType() == GameObjectRegistry.TILE_BASE
+						|| gameTile.getType() == GameObjectRegistry.TILE_DOOR
+						|| gameTile.getType() == GameObjectRegistry.TILE_SEWER
+						|| (gameTile.getType() == GameObjectRegistry.TILE_WATERFALL && gameTile.getVar() == 0)) {
+					mainRef.player().setMoveBack(true);
 					break;
 				}
 			} else if (go instanceof LineColObjHor || go instanceof LineColObjVert) {
-				mainRef.player.moveBack = true;
+				mainRef.player().setMoveBack(true);
 				break;
 			} else if (go instanceof SkillDrop) {
 				SkillDrop d = (SkillDrop) go;
-				mainRef.player.skillCount[d.getVariation()]++;
+				mainRef.player().getInv()[d.getVariation()]++;
 				removeGameObject(go);
 			}
 

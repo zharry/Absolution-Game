@@ -9,19 +9,16 @@ public class Player extends GameObject {
 	private static final long serialVersionUID = 3038088647945748368L;
 
 	// Movement
-	public boolean goUp = false, goDown = false, goLeft = false, goRight = false;
-	int moveDist = 1;
+	private boolean goUp = false, goDown = false, goLeft = false, goRight = false, moveBack = false;
+	private int moveDist = 1;
 
 	// Animation
-	public int curFrame = 0, frameTimer = 0, lastDir = 0;
-	final int ticksPerFrame = 14;
-	boolean freezeFrame;
+	private int curFrame = 0, frameTimer = 0, lastDir = 0;
+	private final int ticksPerFrame = 14;
+	private boolean freezeFrame;
 
-	// Moveback
-	public boolean moveBack = false;
-	
 	// Inventory
-	public int[] skillCount;
+	private int[] skillCount;
 
 	public Player(int x, int y) {
 		super(x, y, 16, 5, 8, 38);
@@ -88,6 +85,38 @@ public class Player extends GameObject {
 
 	@Override
 	public void onCollide() {
+	}
+
+	public int[] getDrawDebug() {
+		return new int[] { lastDir, frameTimer, curFrame };
+	}
+
+	public void setMoveBack(boolean b) {
+		moveBack = b;
+	}
+
+	public boolean getMoveBack() {
+		return moveBack;
+	}
+
+	public void setMoveUp(boolean i) {
+		goUp = i;
+	}
+
+	public void setMoveDown(boolean i) {
+		goDown = i;
+	}
+
+	public void setMoveLeft(boolean i) {
+		goLeft = i;
+	}
+
+	public void setMoveRight(boolean i) {
+		goRight = i;
+	}
+
+	public int[] getInv() {
+		return skillCount;
 	}
 
 }
