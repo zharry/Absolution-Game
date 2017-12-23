@@ -1,9 +1,9 @@
 @echo off
 echo Removing Old Versions...
-del /q /f /s output
-rd output
+del /q /f /s output\*
+rd /s /q output
+cls
 echo Compiling...
-dir sources.txt
 setlocal enabledelayedexpansion
 (for /f "delims=" %%f in ('dir /S /B src\*.java') do @set v=%%f&@echo "!v:\=\\!") >> sources.txt
 mkdir output

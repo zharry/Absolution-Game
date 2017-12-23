@@ -84,8 +84,6 @@ public class Player extends GameObject {
 
 	@Override
 	public void onCollide() {
-		// TODO Auto-generated method stub
-
 	}
 
 }

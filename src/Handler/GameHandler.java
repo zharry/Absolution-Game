@@ -1,5 +1,7 @@
 package Handler;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,8 +40,8 @@ public class GameHandler {
 	public GameHandler(GameInfo g, AbsolutionGame main) {
 		this.mainRef = main;
 		this.gameInfo = g;
-		stage = 0;
-		ui = true;
+		this.stage = 0;
+		this.ui = true;
 	}
 
 	public ArrayList<GameObject> gameObjects() {
@@ -96,7 +98,8 @@ public class GameHandler {
 
 		String mapName = "";
 		int easyGen = r.nextInt(100), medGen = r.nextInt(100);
-		System.out.println("Stage: " +stage + " - Easy Gen: (" + easy + ")" + easyGen + " | Med Gen: (" + med + ")" + medGen);
+		System.out.println(
+				"Stage: " + stage + " - Easy Gen: (" + easy + ")" + easyGen + " | Med Gen: (" + med + ")" + medGen);
 		if (easyGen < easy) {
 			mapName = easyMaps.get(r.nextInt(easyMaps.size()));
 			System.out.println("Easy Map: " + mapName);
@@ -158,12 +161,20 @@ public class GameHandler {
 				object.render(g);
 		mainRef.player.render(g);
 	}
-	
+
+	@SuppressWarnings("static-access")
 	public void renderIU(Graphics g) {
 		// Render UI
 		if (ui) {
-			g.drawImage(GameObjectAssets.skillBar, gameInfo.width/ 2 - 360 / 2, gameInfo.height - 80, null);
+			g.drawImage(GameObjectAssets.skillBar, gameInfo.width / 2 - 360 / 2, gameInfo.height - 80, null);
 		}
+
+		// Draw Score counter
+		g.setColor(Color.WHITE);
+		Font def = g.getFont();
+		g.setFont(def.deriveFont(18.0f));
+		g.drawString("Score: " + (stage - 3), 780, 585);
+		g.setFont(def);
 	}
 
 	public void tick() {
