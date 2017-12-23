@@ -33,6 +33,7 @@ public class GameHandler {
 	private ArrayList<String> easyMaps = new ArrayList<String>();
 	private ArrayList<String> medMaps = new ArrayList<String>();
 	private ArrayList<String> hardMaps = new ArrayList<String>();
+	private ArrayList<String> allMaps = new ArrayList<String>();
 
 	private CheckPoint lastEnd;
 
@@ -55,6 +56,7 @@ public class GameHandler {
 
 	public void addMap(Map m) {
 		String mapName = m.getName();
+		allMaps.add(mapName);
 		switch (m.difficulty()) {
 		case 0:
 			easyMaps.add(mapName);
@@ -69,48 +71,12 @@ public class GameHandler {
 
 	public void loadNextMap() {
 		stage++;
-		if (stage == 41)
-			stage = 21;
 
-		// For Stage 1-5
-		int easy = 100, med = 0;
-		if (stage >= 6 && stage <= 10) {
-			easy = 75;
-			med = 25;
-		} else if (stage >= 11 && stage <= 15) {
-			easy = 0;
-			med = 50;
-		} else if (stage >= 16 && stage <= 20) {
-			easy = 0;
-			med = 25;
-		} else if (stage >= 21 && stage <= 25) {
-			easy = 75;
-			med = 25;
-		} else if (stage >= 26 && stage <= 30) {
-			easy = 25;
-			med = 60;
-		} else if (stage >= 31 && stage <= 35) {
-			easy = 0;
-			med = 25;
-		} else if (stage >= 36 && stage <= 40) {
-			easy = 0;
-			med = 10;
-		}
-
-		String mapName = "";
-		int easyGen = r.nextInt(100), medGen = r.nextInt(100);
-		System.out.println(
-				"Stage: " + stage + " - Easy Gen: (" + easy + ")" + easyGen + " | Med Gen: (" + med + ")" + medGen);
-		if (easyGen < easy) {
-			mapName = easyMaps.get(r.nextInt(easyMaps.size()));
-			System.out.println("Easy Map: " + mapName);
-		} else if (medGen < med) {
-			mapName = medMaps.get(r.nextInt(medMaps.size()));
-			System.out.println("Med Map: " + mapName);
-		} else {
-			mapName = hardMaps.get(r.nextInt(hardMaps.size()));
-			System.out.println("Hard Map: " + mapName);
-		}
+		// Generate Next Map
+		// TODO Re-add level difficulty scaling
+		String mapName = allMaps.get(r.nextInt(allMaps.size()));
+		System.out.println("Stage: " + stage);
+		System.out.println("Next Map: " + mapName);
 
 		// Re-fetch Map File
 		FileInputStream fileIn;
