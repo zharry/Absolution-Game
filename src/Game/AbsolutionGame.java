@@ -265,6 +265,7 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 			new AbsolutionGame("Absolution " + VERSION + " | World Builder", true);
 			break;
 		case 2: // View Highscores
+			// TODO Highscore for later...
 		default:
 			// Close Launcher
 			System.exit(0);
