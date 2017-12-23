@@ -235,13 +235,33 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 		// Launcher
 		int select = JOptionPane.showOptionDialog(null, "Welcome to Absolution!", "Absolution " + VERSION,
 				JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
-				new Object[] { "Start Challenge", "Create World", "Highscores (Official Maps)" }, "Start Challenge");
+				new Object[] { "Start Challenge", "Create World" }, "Start Challenge");
 
 		switch (select) {
 		case 0: // Start Challenge
+			JOptionPane.showOptionDialog(null,
+					"How to play:\n" + "1. Use WASD or UP/DOWN/LEFT/RIGHT to move.\n"
+							+ "2. Collect Skills by running into them. \n"
+							+ "3. The World is infinite, as it takes all the maps in the Maps folder and places them back to back.\n"
+							+ "4. The score is shown on the bottom right corner, it is based on the number 'maps' you've been through. \n"
+							+ "5. Press 'E' to toggle the hotbar \n"
+							+ "6. Press 'F3' to show/hide debug information and collision boxes.",
+					"Info for Absolution " + VERSION, JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
+					new Object[] { "Ok" }, "Ok");
 			new AbsolutionGame("Absolution " + VERSION, false);
 			break;
 		case 1: // Create World
+			JOptionPane.showOptionDialog(null,
+					"How to play:\n" + "1. Select a GameObject in the dropdown.\n"
+							+ "2. Use 'O' and 'P' to scroll through different block variations.\n"
+							+ "3. Hover over the Left drawing panel to see a preview of the block.\n"
+							+ "4. Toggle Grid Locking and grid visibilty with the radio buttons.\n"
+							+ "5. Left Click to place down selected block.\n"
+							+ "6. Right Click remove blocks surround your cursor.\n"
+							+ "7. Each Map must have a 'Start' and 'End' Point. This is where maps will be joined in Challenge Mode.\n"
+							+ "8. Press 'F3' to show/hide debug information.",
+					"Info for Absolution Map Builder " + VERSION, JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
+					new Object[] { "Ok" }, "Ok");
 			new AbsolutionGame("Absolution " + VERSION + " | World Builder", true);
 			break;
 		case 2: // View Highscores
