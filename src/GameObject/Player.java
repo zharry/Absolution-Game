@@ -19,9 +19,13 @@ public class Player extends GameObject {
 
 	// Moveback
 	public boolean moveBack = false;
+	
+	// Inventory
+	public int[] skillCount;
 
 	public Player(int x, int y) {
 		super(x, y, 16, 5, 8, 38);
+		skillCount = new int[7];
 	}
 
 	@Override

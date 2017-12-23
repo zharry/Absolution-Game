@@ -17,6 +17,7 @@ import GameObject.LineColObjHor;
 import GameObject.LineColObjVert;
 import GameObject.Player;
 import GameObject.PointColObj;
+import GameObject.SkillDrop;
 import GameObject.Tile;
 
 public class GameHandler {
@@ -167,6 +168,15 @@ public class GameHandler {
 		// Render UI
 		if (ui) {
 			g.drawImage(GameObjectAssets.skillBar, gameInfo.width / 2 - 360 / 2, gameInfo.height - 80, null);
+			int dX = 314, dY = 573, xInc = 44, skill = 0;
+			for (; skill < 6; skill++) {
+				g.setColor(Color.WHITE);
+				dX += xInc;
+				if (mainRef.player.skillCount[skill] != 0)
+					g.drawString(mainRef.player.skillCount[skill] + "", dX, dY);
+			}
+			if (mainRef.player.skillCount[skill] != 0)
+				g.drawString(mainRef.player.skillCount[skill] + "", dX += 72, dY);
 		}
 
 		// Draw Score counter
@@ -226,6 +236,10 @@ public class GameHandler {
 			} else if (go instanceof LineColObjHor || go instanceof LineColObjVert) {
 				mainRef.player.moveBack = true;
 				break;
+			} else if (go instanceof SkillDrop) {
+				SkillDrop d = (SkillDrop) go;
+				mainRef.player.skillCount[d.getVariation()]++;
+				removeGameObject(go);
 			}
 
 		}

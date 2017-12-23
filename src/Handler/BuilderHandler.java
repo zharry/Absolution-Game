@@ -31,6 +31,7 @@ import GameObject.GameObject;
 import GameObject.LineColObjHor;
 import GameObject.LineColObjVert;
 import GameObject.PointColObj;
+import GameObject.SkillDrop;
 import GameObject.Tile;
 
 public class BuilderHandler extends JPanel {
@@ -75,6 +76,7 @@ public class BuilderHandler extends JPanel {
 				new DropdownItem(GameObjectRegistry.TILE_STAIRS, "Stairs", GameObjectAssets.stairs[0]),
 				new DropdownItem(GameObjectRegistry.TILE_WALL, "Wall", GameObjectAssets.wall[0]),
 				new DropdownItem(GameObjectRegistry.TILE_BASE, "Edge", GameObjectAssets.base[0]),
+				new DropdownItem(GameObjectRegistry.DROP_SKILL, "Skill Pickup", GameObjectAssets.placeHolderSkill),
 				new DropdownItem(GameObjectRegistry.POINT_START, "Start Point", GameObjectAssets.pointStart),
 				new DropdownItem(GameObjectRegistry.POINT_END, "End Point", GameObjectAssets.pointEnd),
 				new DropdownItem(GameObjectRegistry.COL_VERT, "Vertical Collider", GameObjectAssets.vertLine),
@@ -298,6 +300,9 @@ public class BuilderHandler extends JPanel {
 			break;
 		case GameObjectRegistry.COL_HOR:
 			gameHandler.addGameObject(new LineColObjHor(gridLockX, gridLockY));
+			break;
+		case GameObjectRegistry.DROP_SKILL:
+			gameHandler.addGameObject(new SkillDrop(gridLockX, gridLockY, selectedVar % 7));
 			break;
 		default:
 			gameHandler.addGameObject(new Tile(gridLockX, gridLockY, selectedID, selectedVar));

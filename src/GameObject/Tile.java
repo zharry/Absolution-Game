@@ -11,8 +11,6 @@ public class Tile extends GameObject {
 
 	public Tile(int x, int y, int type, int variation) {
 		super(x, y, 32, 32, 0, 0);
-		this.x = x;
-		this.y = y;
 		this.type = type;
 		this.variation = variation;
 	}

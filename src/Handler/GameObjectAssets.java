@@ -12,12 +12,13 @@ public class GameObjectAssets {
 	public static final String TILESDIR = ASSETSDIR + "Tiles/";
 	public static final String PLAYERDIR = ASSETSDIR + "Player/";
 	public static final String UIDIR = ASSETSDIR + "UI/";
+	public static final String SKILLSDIR = ASSETSDIR + "Skills/";
 
 	// Game Assets
 	public static BufferedImage[][] sprPlayer = new BufferedImage[4][4];
 
 	// UI
-	public static BufferedImage skillBar, skillDisabled;
+	public static BufferedImage skillBar, skillDisabled, placeHolderSkill;
 	public static BufferedImage[] settings = new BufferedImage[2];
 	public static BufferedImage pointStart, pointEnd, vertLine, horLine;
 
@@ -32,6 +33,7 @@ public class GameObjectAssets {
 	public static BufferedImage[] stairs = new BufferedImage[4];
 	public static BufferedImage[] wall = new BufferedImage[3];
 	public static BufferedImage[] water = new BufferedImage[12];
+	public static BufferedImage[] skillDrop = new BufferedImage[7];
 
 	public static void initSprites() {
 		// Load Sprites
@@ -61,6 +63,17 @@ public class GameObjectAssets {
 			// Skillbar
 			skillBar = ImageIO.read(new File(UIDIR + "Skillbar-Filled.png"));
 			skillDisabled = ImageIO.read(new File(UIDIR + "Disabled-Skill.png"));
+
+			// Skill Drops
+			i = 0;
+			placeHolderSkill = ImageIO.read(new File(SKILLSDIR + "ComboBoxIcon.png"));
+			skillDrop[i++] = ImageIO.read(new File(SKILLSDIR + "1-Kill.png"));
+			skillDrop[i++] = ImageIO.read(new File(SKILLSDIR + "2-Time-Slow.png"));
+			skillDrop[i++] = ImageIO.read(new File(SKILLSDIR + "3-Double-Gold.png"));
+			skillDrop[i++] = ImageIO.read(new File(SKILLSDIR + "4-Shield.png"));
+			skillDrop[i++] = ImageIO.read(new File(SKILLSDIR + "6-Teleport.png"));
+			skillDrop[i++] = ImageIO.read(new File(SKILLSDIR + "7-True-Sight.png"));
+			skillDrop[i++] = ImageIO.read(new File(SKILLSDIR + "5-Second-Life.png"));
 
 			// Settings
 			i = 0;
@@ -253,6 +266,10 @@ public class GameObjectAssets {
 			return GameObjectAssets.horLine;
 		case GameObjectRegistry.COL_VERT:
 			return GameObjectAssets.vertLine;
+		case GameObjectRegistry.DROP_SKILL:
+			img = skillDrop;
+			maxSprites = skillDrop.length;
+			break;
 		default:
 			img = floor;
 			maxSprites = floor.length;

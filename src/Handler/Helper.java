@@ -51,7 +51,7 @@ public class Helper {
 		for (GameObject go : gameHandler.gameObjects())
 			if (go.hasCol())
 				g.drawRect(go.getPos()[0] + go.getCol()[2] - mainRef.player.getPos()[0] + gameInfo.width / 2,
-						go.getPos()[1]  + go.getCol()[3]- mainRef.player.getPos()[1] + gameInfo.height / 2,
+						go.getPos()[1] + go.getCol()[3] - mainRef.player.getPos()[1] + gameInfo.height / 2,
 						go.getCol()[0], go.getCol()[1]);
 	}
 

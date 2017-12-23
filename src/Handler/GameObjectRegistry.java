@@ -21,4 +21,6 @@ public class GameObjectRegistry {
 	public static final int COL_VERT = 14;
 	public static final int COL_HOR = 15;
 
+	public static final int DROP_SKILL = 16;
+
 }
