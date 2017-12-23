@@ -82,6 +82,7 @@ public class BuilderHandler extends JPanel {
 
 	public BuilderHandler(GameInfo gameInfo, AbsolutionGame game, Helper helper) {
 		this.gameInfo = gameInfo;
+		this.helper = helper;
 
 		setLayout(new FlowLayout(FlowLayout.LEFT, 7, 10));
 		setSize(GameInfo.builderWidth, GameInfo.height);

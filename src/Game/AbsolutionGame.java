@@ -244,7 +244,7 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 							+ "2. Collect Skills by running into them. \n"
 							+ "3. The World is infinite, as it takes all the maps in the Maps folder and places them back to back.\n"
 							+ "4. The score is shown on the bottom right corner, it is based on the number 'maps' you've been through. \n"
-							+ "5. Press 'E' to toggle the hotbar \n"
+							+ "5. Press 'I' to toggle the hotbar \n"
 							+ "6. Press 'F3' to show/hide debug information and collision boxes.",
 					"Info for Absolution " + VERSION, JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
 					new Object[] { "Ok" }, "Ok");
@@ -326,7 +326,7 @@ public class AbsolutionGame extends JFrame implements MouseMotionListener, Mouse
 			player.setMoveLeft(true);
 		if (k == KeyEvent.VK_D || k == KeyEvent.VK_RIGHT)
 			player.setMoveRight(true);
-		if (k == KeyEvent.VK_E)
+		if (k == KeyEvent.VK_I)
 			handler.toggleUI();
 	}
 
